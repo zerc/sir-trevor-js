@@ -5,17 +5,17 @@
 }
 
 .st-block-controls__top:before {
+  @extend .st-icon--add;
+  content: '';
   width: 100%;
   display: block;
-  text-align: center;
-  font-size: 1.875em;
-  padding: 0.3em 0;
-  line-height: 0.9;
+  padding: 1.3em 0;
+  background-position: center center;
 }
 
 .st-block-controls__top:hover:before {
-  color: $accent-color;
-  background: $blocks-control-bg-color;
+  fill: $accent-color;
+  background-color: $blocks-control-bg-color;
 }
 
 .st-block-controls {

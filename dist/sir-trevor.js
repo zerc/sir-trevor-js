@@ -1162,13 +1162,7 @@
       bound: ["_handleContentPaste", "_onFocus", "_onBlur", "onDrop", "onDeleteClick",
               "clearInsertedStyles", "getSelectionForFormatter"],
   
-      className: 'st-block st-icon--add',
-  
-      attributes: function() {
-        return _.extend(SirTrevor.SimpleBlock.fn.attributes.call(this), {
-          'data-icon-after' : "add"
-        });
-      },
+      className: 'st-block ',
   
       icon_name: function() {
         return this.type.toLowerCase();
@@ -2127,12 +2121,6 @@
     _.extend(FloatingBlockControls.prototype, FunctionBind, Renderable, SirTrevor.Events, {
   
       className: "st-block-controls__top",
-  
-      attributes: function() {
-        return {
-          'data-icon': 'add'
-        };
-      },
   
       bound: ['handleBlockMouseOut', 'handleBlockMouseOver', 'handleBlockClick', 'onDrop'],
   

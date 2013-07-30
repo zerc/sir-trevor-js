@@ -6,6 +6,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-grunticon');
 
   grunt.initConfig({
 
@@ -42,6 +43,20 @@ module.exports = function(grunt) {
       scripts: {
         files: ['src/*.js', 'src/**/*.js', 'src/sass/*.scss'],
         tasks: ['sass', 'rig']
+      }
+    },
+
+    grunticon: {
+      sir_trevor: {
+        options: {
+          src: "public/images/icons/src/",
+          dest: "src/sass/icons/",
+          cssprefix: "st-icon--",
+          datasvgcss: "icons-svg.scss",
+          colors: {
+            accent: '#34E0C2'
+          }
+        }
       }
     },
 

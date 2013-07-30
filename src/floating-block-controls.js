@@ -20,12 +20,6 @@ SirTrevor.FloatingBlockControls = (function(){
 
     className: "st-block-controls__top",
 
-    attributes: function() {
-      return {
-        'data-icon': 'add'
-      };
-    },
-
     bound: ['handleBlockMouseOut', 'handleBlockMouseOver', 'handleBlockClick', 'onDrop'],
 
     initialize: function() {

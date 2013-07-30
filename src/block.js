@@ -43,13 +43,7 @@ SirTrevor.Block = (function(){
     bound: ["_handleContentPaste", "_onFocus", "_onBlur", "onDrop", "onDeleteClick",
             "clearInsertedStyles", "getSelectionForFormatter"],
 
-    className: 'st-block st-icon--add',
-
-    attributes: function() {
-      return _.extend(SirTrevor.SimpleBlock.fn.attributes.call(this), {
-        'data-icon-after' : "add"
-      });
-    },
+    className: 'st-block ',
 
     icon_name: function() {
       return this.type.toLowerCase();
