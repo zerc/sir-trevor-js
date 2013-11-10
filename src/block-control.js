@@ -1,31 +1,41 @@
-SirTrevor.BlockControl = (function(){
+define(
 
-  var BlockControl = function(type, instance_scope) {
-    this.type = type;
-    this.instance_scope = instance_scope;
-    this.block_type = SirTrevor.Blocks[this.type].prototype;
-    this.can_be_rendered = this.block_type.toolbarEnabled;
+  ["jQuery", "_", "function-bind", "renderable", "Eventable",
+    "blocks", "text!templates/icon.ejs"],
 
-    this._ensureElement();
-  };
+  function($, _, FunctionBind, Renderable, Eventable, Blocks, icon){
 
-  _.extend(BlockControl.prototype, FunctionBind, Renderable, SirTrevor.Events, {
+    var BlockControl = function(type, instance_scope) {
+      this.type = type;
+      this.instance_scope = instance_scope;
+      this.block_type = Blocks[this.type].prototype;
+      this.can_be_rendered = this.block_type.toolbarEnabled;
 
-    tagName: 'a',
-    className: "st-block-control",
+      this._ensureElement();
+    };
 
-    attributes: function() {
-      return {
-        'data-type': this.block_type.type
-      };
-    },
+    _.extend(BlockControl.prototype, FunctionBind, Renderable, Eventable, {
 
-    render: function() {
-      this.$el.html('<span class="st-icon">'+ _.result(this.block_type, 'icon_name') +'</span>' + _.result(this.block_type, 'title'));
-      return this;
-    }
-  });
+      tagName: 'a',
+      className: "st-block-control",
 
-  return BlockControl;
+      template : _.template(icon),
 
-})();
+      attributes: function() {
+        return {
+          'data-type': this.block_type.type
+        };
+      },
+
+      render: function() {
+        this.$el.html(this.template({
+          name: _.result(this.block_type, 'icon_name'),
+          title: _.result(this.block_type, 'title')
+        }));
+        return this;
+      }
+    });
+
+    return BlockControl;
+  }
+);

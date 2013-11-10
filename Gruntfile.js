@@ -21,6 +21,29 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    requirejs: {
+      js: {
+        options: {
+          findNestedDependencies: true,
+          baseUrl: 'src/',
+          wrap: true,
+          preserveLicenseComments: false,
+          optimize: 'none',
+          mainConfigFile: 'src/rconfig.js',
+          include: 'main',
+          out: 'test.js',
+          onBuildWrite: function( name, path, contents ) {
+            return require('amdclean').clean(contents);
+          }
+          // modules: [
+          //   {
+          //     name: "sir-trevor"
+          //   }
+          // ]
+        }
+      }
+    },
+
     'jasmine' : {
       'sir-trevor': {
         src : 'sir-trevor.js',
@@ -99,6 +122,10 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+
+  grunt.registerTask('build', ['requirejs:js']);
 
   grunt.registerTask('travis', ['rig', 'jasmine']);
 

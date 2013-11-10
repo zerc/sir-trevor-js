@@ -1,4 +1,4 @@
-SirTrevor.BlockPositioner = (function(){
+define(["Eventable"], function(Eventable){
 
   var template = [
     "<div class='st-block-positioner__inner'>",

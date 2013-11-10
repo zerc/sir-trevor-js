@@ -1,4 +1,4 @@
-SirTrevor.BlockDeletion = (function(){
+define(["function-bind", "renderable"], function(FunctionBind, Renderable){
 
   var BlockDeletion = function() {
     this._ensureElement();
