@@ -1,11 +1,6 @@
 "use strict";
 
-var template = [
-  "<div class='st-block-positioner__inner'>",
-  "<span class='st-block-positioner__selected-value'></span>",
-  "<select class='st-block-positioner__select'></select>",
-  "</div>"
-].join("\n");
+var template = require('./templates/block-positioner.tpl');
 
 var BlockPositioner = function(block_element, mediator) {
   this.mediator = mediator;

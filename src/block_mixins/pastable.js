@@ -12,7 +12,7 @@ module.exports = {
     utils.log("Adding pastable to block " + this.blockID);
 
     this.paste_options = Object.assign({}, config.defaults.Block.paste_options, this.paste_options);
-    this.$inputs.append(_.template(this.paste_options.html, this));
+    this.$inputs.append(this.paste_options.html());
 
     this.$('.st-paste-block')
       .bind('click', function(){ $(this).select(); })

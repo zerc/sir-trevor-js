@@ -75,6 +75,7 @@ module.exports = function(grunt) {
       },
       options: {
         banner: banner,
+        transform: [['jstify', { engine: 'lodash.template' }]],
         browserifyOptions: {
           standalone: 'SirTrevor',
         },
