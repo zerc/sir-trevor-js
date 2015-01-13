@@ -14,6 +14,7 @@ var BlockControl = require('./block-control');
 var EventBus = require('./event-bus');
 
 var BlockControls = function(available_types, mediator) {
+  console.log(available_types);
   this.available_types = available_types || [];
   this.mediator = mediator;
 

@@ -25,9 +25,9 @@ function dragLeave(e) {
 }
 
 $.fn.dropArea = function(){
-  this.bind("dragenter", dragEnter).
-    bind("dragover",  dragOver).
-    bind("dragleave", dragLeave);
+  this.on("dragenter", dragEnter)
+      .on("dragover",  dragOver)
+      .on("dragleave", dragLeave);
   return this;
 };
 

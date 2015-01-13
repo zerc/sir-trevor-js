@@ -36,12 +36,12 @@ Object.assign(FloatingBlockControls.prototype, require('./function-bind'), requi
 
   initialize: function() {
     this.$el.on('click', this.handleBlockClick)
-    .dropArea()
-    .bind('drop', this.onDrop);
+        .dropArea()
+        .bind('drop', this.onDrop);
 
     this.$wrapper.on('mouseover', '.st-block', this.handleBlockMouseOver)
-    .on('mouseout', '.st-block', this.handleBlockMouseOut)
-    .on('click', '.st-block--with-plus', this.handleBlockClick);
+      .on('mouseout', '.st-block', this.handleBlockMouseOut)
+      .on('click', '.st-block--with-plus', this.handleBlockClick);
   },
 
   onDrop: function(ev) {
