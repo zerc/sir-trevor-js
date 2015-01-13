@@ -49,3 +49,24 @@
 .st-block-control:hover {
   color: $accent-color;
 }
+
+.st-block-controls__container {
+  position:relative;
+  height:1px;
+  background:#f2f2f2;
+}
+
+.st-block-controls__add {
+  position:absolute;
+  border:none;
+  background-color:$accent-color;
+  padding:5px;
+  vertical-align: middle;
+  font-size: 1em;
+  color:#fff;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  display: block;
+}

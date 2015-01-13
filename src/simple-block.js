@@ -28,7 +28,7 @@ Object.assign(SimpleBlock.prototype, require('./function-bind'), require('./even
   className: 'st-block',
 
   block_template: _.template(
-    "<div class='st-block__inner'><%= editor_html %></div><div class='st-block-controls__container'><button type='button' title='Create block' class='st-block-controls__add'></div>"
+    "<div class='st-block__inner'><%= editor_html %></div><div class='st-block-controls__container'><button type='button' title='Create block' class='st-block-controls__add' data-icon='add'></div>"
   ),
 
   attributes: function() {
