@@ -1,7 +1,21 @@
 "use strict";
 
+var drop_options = {
+  html: require('./templates/block-drop.tpl'),
+  re_render_on_reorder: false
+};
+
+var paste_options = {
+  html: require('./templates/block-paste.tpl')
+};
+
+var upload_options = {
+  html: require('./templates/block-uploader.tpl')
+};
+
 module.exports = {
   debug: false,
+  scribeDebug: false,
   skipValidation: false,
   version: "0.4.0",
   language: "en",
@@ -23,11 +37,50 @@ module.exports = {
       left: '50%',
       top: '50%'
     },
+    Block: {
+      drop_options: drop_options,
+      paste_options: paste_options,
+      upload_options: upload_options,
+    },
     blockLimit: 0,
     blockTypeLimits: {},
     required: [],
     uploadUrl: '/attachments',
     baseImageUrl: '/sir-trevor-uploads/',
     errorsContainer: undefined,
+    convertToMarkdown: false,
+    convertFromMarkdown: true,
+    formatBar: {
+      commands: [
+        {
+          name: "Bold",
+          title: "bold",
+          cmd: "bold",
+          keyCode: 66,
+          text : "B"
+        },
+        {
+          name: "Italic",
+          title: "italic",
+          cmd: "italic",
+          keyCode: 73,
+          text : "i"
+        },
+        {
+          name: "Link",
+          title: "link",
+          iconName: "link",
+          cmd: "linkPrompt",
+          text : "link",
+        },
+        {
+          name: "Unlink",
+          title: "unlink",
+          iconName: "link",
+          cmd: "unlink",
+          text : "link",
+        },
+      ],
+    },
   }
 };

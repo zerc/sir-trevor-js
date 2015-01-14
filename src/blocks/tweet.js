@@ -1,18 +1,10 @@
 "use strict";
 
 var _ = require('../lodash');
+var $ = require('jquery');
 var utils = require('../utils');
 
 var Block = require('../block');
-
-var tweet_template = _.template([
-  "<blockquote class='twitter-tweet' align='center'>",
-  "<p><%= text %></p>",
-  "&mdash; <%= user.name %> (@<%= user.screen_name %>)",
-  "<a href='<%= status_url %>' data-datetime='<%= created_at %>'><%= created_at %></a>",
-  "</blockquote>",
-  '<script src="//platform.twitter.com/widgets.js" charset="utf-8"></script>'
-].join("\n"));
 
 module.exports = Block.extend({
 
@@ -36,7 +28,7 @@ module.exports = Block.extend({
   loadData: function(data) {
     if (_.isUndefined(data.status_url)) { data.status_url = ''; }
     this.$inner.find('iframe').remove();
-    this.$inner.prepend(tweet_template(data));
+    this.$inner.prepend(require('../templates/blocks/tweet.tpl')(data));
   },
 
   onContentPasted: function(event){

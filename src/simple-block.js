@@ -2,14 +2,16 @@
 
 var _ = require('./lodash');
 var utils = require('./utils');
+var $ = require('jquery');
 
 var BlockReorder = require('./block-reorder');
 
-var SimpleBlock = function(data, instance_id, mediator) {
+var SimpleBlock = function(data, instance_id, mediator, options) {
   this.createStore(data);
   this.blockID = _.uniqueId('st-block-');
   this.instanceID = instance_id;
   this.mediator = mediator;
+  this.options = options || {};
 
   this._ensureElement();
   this._bindFunctions();
@@ -25,9 +27,7 @@ Object.assign(SimpleBlock.prototype, require('./function-bind'), require('./even
 
   className: 'st-block',
 
-  block_template: _.template(
-    "<div class='st-block__inner'><%= editor_html %></div>"
-  ),
+  block_template: require('./templates/block.tpl'),
 
   attributes: function() {
     return {

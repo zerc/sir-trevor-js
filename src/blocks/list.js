@@ -5,8 +5,6 @@ var _ = require('../lodash');
 var Block = require('../block');
 var stToHTML = require('../to-html');
 
-var template = '<div class="st-text-block st-required" contenteditable="true"><ul><li></li></ul></div>';
-
 module.exports = Block.extend({
 
   type: 'list',
@@ -16,11 +14,11 @@ module.exports = Block.extend({
   icon_name: 'list',
 
   editorHTML: function() {
-    return _.template(template, this);
+    return require('../templates/blocks/list.tpl');
   },
 
   loadData: function(data){
-    this.getTextBlock().html("<ul>" + stToHTML(data.text, this.type) + "</ul>");
+    this.setTextBlockHTML("<ul>" + stToHTML(data.text, this.type) + "</ul>");
   },
 
   onBlockRender: function() {

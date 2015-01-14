@@ -47,6 +47,10 @@ module.exports = function(grunt) {
     node: true,
   }
 
+  var browserifyDefaultOptions = {
+    standalone: 'SirTrevor',
+  };
+
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -61,24 +65,27 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         src: 'index.js',
-        dest: 'sir-trevor.js',
+        dest: 'build/sir-trevor.js',
       },
+
       debug: {
         src: 'index.js',
-        dest: 'sir-trevor.debug.js',
+        dest: 'build/sir-trevor.debug.js',
         options: {
-          browserifyOptions: {
-            standalone: 'SirTrevor',
+          browserifyOptions: Object.assign({}, browserifyDefaultOptions, {
             debug: true,
-          },
+          }),
         },
       },
+
       options: {
         banner: banner,
-        transform: [['jstify', { engine: 'lodash.template' }]],
-        browserifyOptions: {
-          standalone: 'SirTrevor',
-        },
+        browserifyOptions: browserifyDefaultOptions,
+        transform: [
+          ['jstify', { engine: 'lodash.template' }],
+          ['deamdify', {global: true}],
+          'browserify-shim'
+        ],
       },
     },
 
@@ -95,9 +102,9 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'sir-trevor.min.js': ['sir-trevor.js']
+          'build/sir-trevor.min.js': ['build/sir-trevor.js']
         }
-      }
+      },
     },
 
     watch: {
@@ -110,17 +117,18 @@ module.exports = function(grunt) {
     jshint: {
       lib: {
         src: ['index.js', 'src/**/*.js'],
-        options: Object.assign({
+        options: Object.assign({}, jsHintDefaultOptions, {
+          jquery: false,
           globals: {
             i18n: true,
             webkitURL: true,
           },
-        }, jsHintDefaultOptions),
+        }),
       },
 
       tests: {
         src: ['spec/**/*.js'],
-        options: Object.assign({
+        options: Object.assign({}, jsHintDefaultOptions, {
           globals: {
             _: true,
             SirTrevor: true,
@@ -133,16 +141,20 @@ module.exports = function(grunt) {
             spyOn: true,
             beforeEach: true,
           },
-        }, jsHintDefaultOptions),
+        }),
       },
     },
 
     sass: {
       dist: {
         files: {
-          'sir-trevor.css': 'src/sass/main.scss'
+          'build/sir-trevor.css': 'src/sass/main.scss'
         }
-      }
+      },
+
+      options: {
+        loadPath: require('node-bourbon').includePaths,
+      },
     }
 
   });

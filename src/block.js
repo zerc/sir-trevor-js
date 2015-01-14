@@ -1,10 +1,14 @@
 "use strict";
 
 var _ = require('./lodash');
+var $ = require('jquery');
+
+var Scribe = require('scribe-editor');
+var scribePluginFormatterPlainTextConvertNewLinesToHTML = require('scribe-plugin-formatter-plain-text-convert-new-lines-to-html');
+var scribePluginLinkPromptCommand = require('scribe-plugin-link-prompt-command');
 
 var config = require('./config');
 var utils = require('./utils');
-var stToHTML = require('./to-html');
 var stToMarkdown = require('./to-markdown');
 var BlockMixins = require('./block_mixins');
 
@@ -12,32 +16,18 @@ var SimpleBlock = require('./simple-block');
 var BlockReorder = require('./block-reorder');
 var BlockDeletion = require('./block-deletion');
 var BlockPositioner = require('./block-positioner');
-var Formatters = require('./formatters');
 var EventBus = require('./event-bus');
 
 var Spinner = require('spin.js');
 
 var deleteTemplate = require('./templates/block-delete.tpl');
 
-var Block = function(data, instance_id, mediator) {
+var Block = function(data, instance_id, mediator, options) {
   SimpleBlock.apply(this, arguments);
 };
 
 Block.prototype = Object.create(SimpleBlock.prototype);
 Block.prototype.constructor = Block;
-
-config.defaults.Block = {
-  drop_options: {
-    html: require('./templates/block-drop.tpl'),
-    re_render_on_reorder: false
-  },
-  paste_options: {
-    html: require('./templates/block-paste.tpl')
-  },
-  upload_options: {
-    html: require('./templates/block-uploader.tpl')
-  }
-};
 
 Object.assign(Block.prototype, SimpleBlock.fn, require('./block-validations'), {
 
@@ -160,9 +150,9 @@ Object.assign(Block.prototype, SimpleBlock.fn, require('./block-validations'), {
 
     /* Simple to start. Add conditions later */
     if (this.hasTextBlock()) {
-      var content = this.getTextBlock().html();
-      if (content.length > 0) {
-        data.text = stToMarkdown(content, this.type);
+      data.text = this.getTextBlockHTML();
+      if (data.text.length > 0 && this.options.convertToMarkdown) {
+        data.text = stToMarkdown(data.text, this.type);
       }
     }
 
@@ -242,15 +232,6 @@ Object.assign(Block.prototype, SimpleBlock.fn, require('./block-validations'), {
                        onDeleteDeny.bind(this));
   },
 
-  pastedMarkdownToHTML: function(content) {
-    return stToHTML(stToMarkdown(content, this.type), this.type);
-  },
-
-  onContentPasted: function(event, target){
-    target.html(this.pastedMarkdownToHTML(target[0].innerHTML));
-    this.getTextBlock().caretToEnd();
-  },
-
   beforeLoadingData: function() {
     this.loading();
 
@@ -262,6 +243,24 @@ Object.assign(Block.prototype, SimpleBlock.fn, require('./block-validations'), {
     SimpleBlock.fn.beforeLoadingData.call(this);
 
     this.ready();
+  },
+
+  execTextBlockCommand: function(cmdName) {
+    if (_.isUndefined(this._scribe)) {
+      throw "No Scribe instance found to send a command to";
+    }
+    var cmd = this._scribe.getCommand(cmdName);
+    this._scribe.el.focus();
+    cmd.execute();
+  },
+
+  queryTextBlockCommandState: function(cmdName) {
+    if (_.isUndefined(this._scribe)) {
+      throw "No Scribe instance found to query command";
+    }
+    var cmd = this._scribe.getCommand(cmdName),
+        sel = new this._scribe.api.Selection();
+    return sel.range && cmd.queryState();
   },
 
   _handleContentPaste: function(ev) {
@@ -294,23 +293,56 @@ Object.assign(Block.prototype, SimpleBlock.fn, require('./block-validations'), {
 
   _initFormatting: function() {
     // Enable formatting keyboard input
-    var formatter;
-    for (var name in Formatters) {
-      if (Formatters.hasOwnProperty(name)) {
-        formatter = Formatters[name];
-        if (!_.isUndefined(formatter.keyCode)) {
-          formatter._bindToBlock(this.$el);
-        }
-      }
+    var block = this;
+
+    if (!this.options.formatBar) {
+      return;
     }
+
+    this.options.formatBar.commands.forEach(function(cmd) {
+      if (_.isUndefined(cmd.keyCode)) {
+        return;
+      }
+
+      var ctrlDown = false;
+
+      block.$el
+        .on('keyup','.st-text-block', function(ev) {
+          if(ev.which === 17 || ev.which === 224 || ev.which === 91) {
+            ctrlDown = false;
+          }
+        })
+        .on('keydown','.st-text-block', {formatter: cmd}, function(ev) {
+          if(ev.which === 17 || ev.which === 224 || ev.which === 91) {
+            ctrlDown = true;
+          }
+
+          if(ev.which === ev.data.formatter.keyCode && ctrlDown) {
+            ev.preventDefault();
+            block.execTextBlockCommand(ev.data.formatter.cmd);
+          }
+        });
+    });
   },
 
   _initTextBlocks: function() {
     this.getTextBlock()
-    .bind('paste', this._handleContentPaste)
-    .bind('keyup', this.getSelectionForFormatter)
-    .bind('mouseup', this.getSelectionForFormatter)
-    .bind('DOMNodeInserted', this.clearInsertedStyles);
+        .bind('keyup', this.getSelectionForFormatter)
+        .bind('mouseup', this.getSelectionForFormatter)
+        .bind('DOMNodeInserted', this.clearInsertedStyles);
+
+    var textBlock = this.getTextBlock().get(0);
+    if (!_.isUndefined(textBlock) && _.isUndefined(this._scribe)) {
+      this._scribe = new Scribe(textBlock, {
+        debug: config.scribeDebug,
+      });
+      this._scribe.use(scribePluginFormatterPlainTextConvertNewLinesToHTML());
+      this._scribe.use(scribePluginLinkPromptCommand());
+
+      if (_.isFunction(this.options.configureScribe)) {
+        this.options.configureScribe.call(this, this._scribe);
+      }
+    }
   },
 
   getSelectionForFormatter: function() {
@@ -340,6 +372,14 @@ Object.assign(Block.prototype, SimpleBlock.fn, require('./block-validations'), {
     }
 
     return this.text_block;
+  },
+
+  getTextBlockHTML: function() {
+    return this._scribe.getHTML();
+  },
+
+  setTextBlockHTML: function(html) {
+    return this._scribe.setContent(html);
   },
 
   isEmpty: function() {
