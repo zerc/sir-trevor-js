@@ -56,7 +56,7 @@ module.exports = function(config) {
     // Browserify config (all optional)
     browserify: {
       debug: true,
-      transform: [['deamdify', {global: true}]]
+      transform: ['babelify', ['deamdify', {global: true}]]
     },
 
     browserNoActivityTimeout: 60000,

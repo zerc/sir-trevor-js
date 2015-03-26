@@ -17,6 +17,9 @@ module.exports = function(grunt) {
   ].join("\n");
 
   var jsHintDefaultOptions = {
+    // ES6
+    esnext: true,
+
     // Errors
     bitwise: true,
     camelcase: false,
@@ -81,7 +84,8 @@ module.exports = function(grunt) {
       options: {
         banner: banner,
         browserifyOptions: browserifyDefaultOptions,
-        transform: [['deamdify', {global: true}], 'browserify-shim'],
+        transform: ['babelify', ['deamdify', {global: true}],
+          'browserify-shim'],
       },
     },
 
