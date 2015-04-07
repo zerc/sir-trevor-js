@@ -6,3 +6,4 @@ _SpecRunner.html
 bower_components/
 components/
 .grunt
+banner.tmp
