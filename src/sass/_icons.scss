@@ -22,22 +22,11 @@
 
 // ST-Icons
 /* Use the following CSS code if you want to use data attributes for inserting your icons */
-[data-icon]:before,
-[data-icon-after]:after {
-  @include sir-trevor-icons;
+[data-icon]:before {
   content: attr(data-icon);
-}
-
-[data-icon-after]:after {
-  content: attr(data-icon-after);
 }
 
 .st-icon {
   @include sir-trevor-icons;
   cursor:pointer;
 }
-
-[data-icon=bin]:hover:before {
-  content: "binopen";
-}
-

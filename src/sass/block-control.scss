@@ -35,6 +35,7 @@ $animation-speed: 0.2s;
 .st-block-addition__button {
   transition: all $animation-speed ease-in-out;
   @extend .st-icon;
+  @extend .st-icon--add;
   background-color:$block-controls-color;
   position:relative;
   box-sizing:border-box;

@@ -20,12 +20,11 @@ Object.assign(BlockReorder.prototype, require('./function-bind'), require('./ren
 
   bound: ['onMouseDown', 'onDragStart', 'onDragEnd', 'onDrop'],
 
-  className: 'st-block-ui-btn__reorder',
+  className: 'st-block-ui-btn__reorder st-icon st-icon--move',
   tagName: 'a',
 
   attributes: function() {
     return {
-      'html': 'reorder',
       'draggable': 'true',
       'data-icon': 'move'
     };

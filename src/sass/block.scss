@@ -7,6 +7,7 @@
 }
 
 .st-block__inner {
+  overflow: hidden;
   position: relative;
   width:80%;
   margin:auto;
@@ -17,8 +18,7 @@
   border-color: $error-color;
 }
 
-.st-block--with-plus:after,
-.st-icon--add:after {
+.st-block--with-plus:after {
   display: block;
   position: relative; z-index: 1;
   bottom: 0;
@@ -26,14 +26,6 @@
 
 .st--block-limit-reached .st-block-addition {
   display: none;
-}
-
-.st-icon--add:after {
-  text-align: center;
-  font-size: 1.875em;
-  padding: 0.3em 0;
-  line-height: 0.9;
-  border-radius: 0.2em;
 }
 
 .st-block--with-plus:after {
@@ -107,10 +99,7 @@
   font-size: 2.2em;
   min-height: 1em;
   font-weight: 700;
-}
-
-.st-text-block--heading p {
-  margin:.5em 0;
+  padding: 0.5em 0;
 }
 
 ul.st-text-block {

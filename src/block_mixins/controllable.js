@@ -24,7 +24,7 @@ module.exports = {
   getControlTemplate: function(cmd) {
     return Dom.createElement("a",
       { 'data-icon': cmd,
-        'class': 'st-icon st-block-control-ui-btn st-block-control-ui-btn--' + cmd
+        'class': 'st-icon st-icon--' + cmd + ' st-block-control-ui-btn st-block-control-ui-btn--' + cmd
       });
   },
 

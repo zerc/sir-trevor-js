@@ -8,10 +8,9 @@ var BlockDeletion = function() {
 Object.assign(BlockDeletion.prototype, require('./function-bind'), require('./renderable'), {
 
   tagName: 'a',
-  className: 'st-block-ui-btn__delete',
+  className: 'st-block-ui-btn__delete st-icon st-icon--close',
 
   attributes: {
-    html: 'delete',
     'data-icon': 'close'
   }
 

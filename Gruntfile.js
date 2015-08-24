@@ -13,6 +13,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-jasmine-nodejs');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-webfont');
 
   grunt.initConfig({
 
@@ -76,6 +77,22 @@ module.exports = function(grunt) {
 
     clean: {
       all: ["build/*.*"]
+    },
+
+    webfont: {
+      icons: {
+        src: 'public/images/icons/src/*.svg',
+        dest: 'src/sass/icons',
+        options: {
+          types: 'woff',
+          syntax: 'bem',
+          templateOptions: {
+            baseClass: 'st-icon',
+            classPrefix: 'st-icon--'
+          },
+          embed: true
+        }
+      }
     }
   });
 
